@@ -10,7 +10,7 @@ app = FastAPI()
 
 @app.get("/", response_class=RedirectResponse)
 async def root():
-    return RedirectResponse(url="https://discord.com")
+    return RedirectResponse(url="https://github.com/Andcool-Systems/Discord-OpenGraph/tree/main")
 
 
 @app.get("/{uid}", response_class=HTMLResponse)
@@ -41,7 +41,7 @@ async def uid(uid: str):
         <meta name="theme-color" content="{user_data['user']['banner_color'] if user_data['user']['banner_color'] else '#2563eb'}">
         <meta property="og:url" content="https://discord.com/users/{uid}" />
         <meta property="og:site_name" content="Discord" />
-        <meta property="og:image" content="https://cdn.discordapp.com/avatars/{uid}/{user_data['user']['avatar']}" />
+        <meta property="og:image" content="https://cdn.discordapp.com/avatars/{uid}/{user_data['user']['avatar']}?size=1024" />
         <meta property="og:description" content="{user_data['user']['bio']}" />
     </head>
     <body>
