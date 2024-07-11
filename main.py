@@ -23,7 +23,11 @@ async def uid(uid: str):
     async with aiohttp.ClientSession("https://discord.com") as session:
         async with session.get(f"/api/v10/users/{uid}/profile", headers={"Authorization": os.getenv("TOKEN")}) as response:
             if response.status == 200:
-                user_data = await response.json()
+                user_data = (await response.json())['user']
+        if not user_data:
+            async with session.get(f"/api/v10/users/{uid}", headers={"Authorization": os.getenv("TOKEN")}) as response:
+                if response.status == 200:
+                    user_data = await response.json()
 
     if not user_data:
         return JSONResponse({
@@ -37,12 +41,12 @@ async def uid(uid: str):
     <!DOCTYPE html>
     <html>
     <head>
-        <meta property="og:title" content="{user_data['user']['global_name'] if user_data['user']['global_name'] else user_data['user']['username']}">
-        <meta name="theme-color" content="{user_data['user']['banner_color'] if user_data['user']['banner_color'] else '#2563eb'}">
+        <meta property="og:title" content="{user_data['global_name'] if user_data['global_name'] else user_data['username']}">
+        <meta name="theme-color" content="{user_data['banner_color'] if user_data['banner_color'] else '#2563eb'}">
         <meta property="og:url" content="https://discord.com/users/{uid}" />
         <meta property="og:site_name" content="Discord" />
-        <meta property="og:image" content="https://cdn.discordapp.com/avatars/{uid}/{user_data['user']['avatar']}?size=1024" />
-        <meta property="og:description" content="{user_data['user']['bio']}" />
+        <meta property="og:image" content="https://cdn.discordapp.com/avatars/{uid}/{user_data['avatar']}?size=1024" />
+        <meta property="og:description" content="{user_data['bio'] if 'bio' in user_data else ''}" />
     </head>
     <body>
     </body>
