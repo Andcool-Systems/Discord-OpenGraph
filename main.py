@@ -19,8 +19,8 @@ async def uid(uid: str, request: Request):
         return
     
     user_data = None
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f"https://discord.com/api/v10/users/{uid}/profile", headers={"Authorization": os.getenv("TOKEN")}) as response:
+    async with aiohttp.ClientSession("https://discord.com") as session:
+        async with session.get(f"/api/v10/users/{uid}/profile", headers={"Authorization": os.getenv("TOKEN")}) as response:
             if response.status == 200:
                 user_data = (await response.json())['user']
         if not user_data:
