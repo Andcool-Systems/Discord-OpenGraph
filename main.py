@@ -13,19 +13,18 @@ async def root():
     return RedirectResponse(url="https://github.com/Andcool-Systems/Discord-OpenGraph/tree/main")
 
 
-@app.get("/{uid}", response_class=HTMLResponse)
-async def uid(uid: str):
-
-    if (uid == 'favicon.ico'):
+@app.get("/{uid}")
+async def uid(uid: str, request: Request):
+    if uid == 'favicon.ico':
         return
-
+    
     user_data = None
     async with aiohttp.ClientSession("https://discord.com") as session:
         async with session.get(f"/api/v10/users/{uid}/profile", headers={"Authorization": os.getenv("TOKEN")}) as response:
             if response.status == 200:
                 user_data = (await response.json())['user']
         if not user_data:
-            async with session.get(f"/api/v10/users/{uid}", headers={"Authorization": os.getenv("TOKEN")}) as response:
+            async with session.get(f"https://discord.com/api/v10/users/{uid}", headers={"Authorization": os.getenv("TOKEN")}) as response:
                 if response.status == 200:
                     user_data = await response.json()
 
@@ -36,6 +35,17 @@ async def uid(uid: str):
             }, 
             status_code=404
         )
+    
+    if request.headers.get('accept') == 'application/json':
+        response_data = {
+            "global_name": user_data.get('global_name', user_data.get('username')),
+            "username": user_data.get('username'),
+            "banner_color": user_data.get('banner_color', '#2563eb'),
+            "avatar": f"https://cdn.discordapp.com/avatars/{uid}/{user_data.get('avatar')}?size=2048",
+            "bio": user_data.get('bio', ''),
+            "url": f"https://discord.com/users/{uid}"
+        }
+        return JSONResponse(content=response_data)
     
     html_content = f"""
     <!DOCTYPE html>
