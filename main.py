@@ -40,9 +40,9 @@ async def uid(uid: str, request: Request):
         response_data = {
             "global_name": user_data.get('global_name', user_data.get('username')),
             "username": user_data.get('username'),
-            "banner_color": user_data.get('banner_color', '#2563eb'),
-            "avatar": f"https://cdn.discordapp.com/avatars/{uid}/{user_data.get('avatar')}?size=2048",
-            "bio": user_data.get('bio', ''),
+            "banner_color": user_data.get('banner_color', None),
+            "avatar": f"https://cdn.discordapp.com/avatars/{uid}/{user_data.get('avatar')}",
+            "bio": user_data.get('bio', None),
             "url": f"https://discord.com/users/{uid}"
         }
         return JSONResponse(content=response_data)
@@ -51,12 +51,12 @@ async def uid(uid: str, request: Request):
     <!DOCTYPE html>
     <html>
     <head>
-        <meta property="og:title" content="{user_data['global_name'] if user_data['global_name'] else user_data['username']}">
-        <meta name="theme-color" content="{user_data['banner_color'] if user_data['banner_color'] else '#2563eb'}">
+        <meta property="og:title" content="{user_data.get('global_name', user_data.get('username'))}">
+        <meta name="theme-color" content="{user_data.get('banner_color', '#2563eb')}">
         <meta property="og:url" content="https://discord.com/users/{uid}" />
         <meta property="og:site_name" content="Discord" />
         <meta property="og:image" content="https://cdn.discordapp.com/avatars/{uid}/{user_data['avatar']}?size=1024" />
-        <meta property="og:description" content="{user_data['bio'] if 'bio' in user_data else ''}" />
+        <meta property="og:description" content="{user_data.get('bio', '')}" />
     </head>
     <body>
     </body>
