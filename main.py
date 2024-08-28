@@ -24,7 +24,7 @@ async def uid(uid: str, request: Request):
             if response.status == 200:
                 user_data = (await response.json())['user']
         if not user_data:
-            async with session.get(f"https://discord.com/api/v10/users/{uid}", headers={"Authorization": os.getenv("TOKEN")}) as response:
+            async with session.get(f"/api/v10/users/{uid}", headers={"Authorization": os.getenv("TOKEN")}) as response:
                 if response.status == 200:
                     user_data = await response.json()
 
