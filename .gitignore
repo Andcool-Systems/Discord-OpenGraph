@@ -1,1 +1,8 @@
-/.env
+.env
+/target
+/.idea
+*.lock
+*.py
+*.db
+*env*
+!.env.example
