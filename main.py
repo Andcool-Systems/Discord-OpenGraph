@@ -1,5 +1,5 @@
 import aiohttp
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 import uvicorn
 from dotenv import load_dotenv
