@@ -55,7 +55,7 @@ async def uid(uid: str, request: Request):
         <meta name="theme-color" content="{user_data.get('banner_color', '#2563eb')}">
         <meta property="og:url" content="https://discord.com/users/{uid}" />
         <meta property="og:site_name" content="Discord" />
-        <meta property="og:image" content="https://cdn.discordapp.com/avatars/{uid}/{user_data['avatar']}?size=1024" />
+        <meta property="og:image" content="https://cdn.discordapp.com/avatars/{uid}/{user_data.get('avatar')}?size=1024" />
         <meta property="og:description" content="{user_data.get('bio', '')}" />
     </head>
     <body>
